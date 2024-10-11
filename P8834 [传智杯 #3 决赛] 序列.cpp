@@ -5,6 +5,7 @@ int main() {
 	int r = 0;
 	cin >> n >> k;
 	long long * a = new long long[n];//尽量使用最大的
+	//如果使用int会报错 使用long 或者 long long 则不会
 	for (int p = 0; p < n; p++) {
 		cin >> a[p];
 	}
