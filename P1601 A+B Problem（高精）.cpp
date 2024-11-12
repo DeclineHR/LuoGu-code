@@ -5,9 +5,9 @@ using namespace std;
 int main() {
 	string a, b;
 	cin >> a >> b;
-	long c[Len] = {0}, d[Len] = {0};
+	long c[Len] = {0}, d[Len] = {0};//一定要初始化成0
 	for (int i = 0; i < a.size(); i++) {
-		c[i] = a[a.size() - i - 1] - '0';
+		c[i] = a[a.size() - i - 1] - '0';//倒置存储，能够从小到大往上加
 		//极其重要：字符a中得到的是字符数字要减去字符0来得到数字
 	}
 	for (int i = 0; i < b.size(); i++) {
