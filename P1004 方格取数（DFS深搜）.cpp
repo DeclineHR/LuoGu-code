@@ -1,9 +1,8 @@
 //https://www.luogu.com.cn/problem/P1004
 //这里的关键是要考虑到两条路径的所有可能的走法，并比较它们以找到最大和。
-#define _CRT_SECURE_NO_WARNINGS
 #include<bits/stdc++.h>
 using namespace std;
-#define maxn 15
+#define maxn 20
 int f[maxn][maxn][maxn][maxn];
 //声明了一个四维数组 f，它的作用是存储动态规划过程中的中间结果，
 //以避免重复计算子问题的解。这种技术通常被称为“记忆化”或“备忘录”。
@@ -22,7 +21,7 @@ int N = 0;
 //有四种进行方式
 int dfs(int x,int y,int x2,int y2) {
 	if (f[x][y][x2][y2] != -1) return f[x][y][x2][y2];
-	//使用 记忆化 技术（即检查 f[x][y][x2][y2] 是否已经被计算过）来避免重复计算,节省时间
+	//使用 记忆化 技术（即检查 f[x][y][x2][y2] 是否已经被计算过）来避免重复计算,节省时间，防止超时
 	if (x == N && y == N && x2 == N && y2 == N) return 0;
 	//如果两种方案都走到了终点，返回结束
 	int M = 0;	
@@ -38,7 +37,7 @@ int dfs(int x,int y,int x2,int y2) {
 	if (x < N && y < N) M = max(M, dfs(x + 1, y, x2, y2 + 1) + s[x + 1][y] + s[x2][y2 + 1] - s[x + 1][y] * (x + 1 == x2 && y == y2 + 1));
 	//如果1的y不在最后一列 2的x2不在最后一行 
 	//4.	1向右 2向下
-	if (y < N && y2 < N) M = max(M, dfs(x, y + 1, x2 + 1, y2) + s[x][y + 1] + s[x2 + 1][y2] - s[x][y + 1] * (x == x2 + 1 && y + 1 == y2));
+	if (y < N && x2 < N) M = max(M, dfs(x, y + 1, x2 + 1, y2) + s[x][y + 1] + s[x2 + 1][y2] - s[x][y + 1] * (x == x2 + 1 && y + 1 == y2));
 	
 	f[x][y][x2][y2] = M;//到达给该处路径的最大值进行更新
 	//f[x][y][x2][y2] 的值代表了从起点 (1,1) 到 (x,y) 和从起点 (1,1) 到 (x2,y2) 的两条路径上取得的最大收益。
@@ -47,12 +46,11 @@ int dfs(int x,int y,int x2,int y2) {
 }
 int main() {
 	cin >> N;
-	memset(f, -1,sizeof(f));//全部初始化为-1， 不初始化为0 因为该点的可能收益为0  导致前面的判断直接return
-  //memset(要替换数组，替换为的元素，要替换的个数);  
-	for (; ;) {//无限循环直到输入0 0 0
+	memset(f, -1,sizeof(f));
+	for (; ;) {
 		int t1, t2, t3;
 		cin >> t1 >> t2 >> t3;
-		if (!t1 && !t2 && !t3) {
+		if (t1 == 0 && t2 == 0 && t3 == 0) {
 			break;
 		}
 		s[t1][t2] = t3;
