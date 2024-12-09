@@ -12,37 +12,28 @@
 //3 4
 //5 5
 //-1 -1
-
 #include<iostream>
 using namespace std;
 const int N = 100010;//根据题目范围开略大的数值
 int n, q;
 int a[N];
-
-确定分界线的位置 来设定bool！！
-
-//如1 3 3 (分界线1) 4 4 (分界线2) 5
-//IB1找的是第一个4 则分界限1在 3 4 之间 条件为 < 4
-bool IB1(int num,int x) {
-	return num < x;
-}
-//IB2找的是第二个4 则分界限2在 4 5 之间 条件为 < 5
-bool IB2(int num,int x) {
-	return num < x + 1;
-}
 int bs1(int* a, int len, int x) {
 	int l = -1;
 	int r = len;
 	while (l + 1 != r) {
 		int mid = (l + r) / 2;
-		if (IB1(a[mid],x)) {
+		//确定分界线的位置 来设定bool！！
+		//如1 3 3 { 4 4 } 5
+		//找的是第一个4 则分界限1在 3 4 之间 条件为 < 4
+		if (a[mid] < x) {
 			l = mid;
 		}
 		else {
 			r = mid;
 		}
 	}
-	if (a[r] == x)return r;//如1 3 3 (分界线1) 4 4 (分界线2) 5 分界线1右边为要求的数字4 则返回r
+	if (a[r] == x)return r;
+	//如1 3 3 (分界线1) 4 4 (分界线2) 5 分界线1右边为要求的数字4 则返回r
 	else return -1;
 }
 int bs2(int* a, int len, int x) {
@@ -50,14 +41,17 @@ int bs2(int* a, int len, int x) {
 	int r = len;
 	while (l + 1 != r) {
 		int mid = (l + r) / 2;
-		if (IB2(a[mid],x)) {
+		//找的是第二个4 则分界限2在 4 5 之间 条件为 < 5
+		//1 3 3 { 4 4 } 5
+		if (a[mid] < x + 1) {
 			l = mid;
 		}
 		else {
 			r = mid;
 		}
 	}
-	if (a[l] == x)return l;//1 3 3 (分界线1) 4 4 (分界线2) 5 分界线2左边为要求的数字4 则返回l
+	if (a[l] == x)return l;
+	//1 3 3 (分界线1) 4 4 (分界线2) 5 分界线2左边为要求的数字4 则返回l
 	else return -1;
 }
 
@@ -70,7 +64,12 @@ int main() {
 	while (q--) {
 		int b;
 		cin >> b;
-		int res1 = bs1(a, n, b);
+		int res1 = bs1(a, n, b);//优化：
+		//若 res1 = -1 则表明没有这个元素 res2没必要查找了直接输出-1 -1 
+		if (res1 == -1) {
+			cout << "-1 -1" << endl;
+			continue;
+		}
 		int res2 = bs2(a, n, b);
 		cout << res1 << " " << res2 << endl;
 	}
