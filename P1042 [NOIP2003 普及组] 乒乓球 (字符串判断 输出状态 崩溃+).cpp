@@ -13,7 +13,6 @@ int main() {
 	while (1) {
 		cin >> a;
 		if (a == 'E') break;
-		if (a == '\n')continue;
 		if (a == 'W') {
 			ans5[g]++;
 			ans7[k]++;
