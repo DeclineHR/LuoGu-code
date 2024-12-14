@@ -1,0 +1,38 @@
+#include<bits/stdc++.h>
+using namespace std;
+int b;
+string line, buf,ans;
+bool cmp(const string& a, const string& b) {
+    return (a + b > b + a);
+    //拼接的大小比较细节 不是直接比较 a > b     
+    //而是将ab拼接比较 
+    //如 a : 32 b 321
+    //则 ab: 32321 > ba : 32132
+    //若是用a > b来比较 结果会是32132不是所求的最大值
+}
+int main() {
+    cin >> b;
+    vector<string>s(b);
+    for (int i = 0; i < b; i++) {
+        cin >> s[i];
+    }
+    sort(s.begin(), s.end(),cmp);
+    int count = 0;
+    ans = s[0];
+    for (int i = 1; i < b; i++) {
+        ans += s[i];
+    }
+    //判断全0数组
+    int flag = 0;
+    for (int i = 0; i < ans.size() - 1; i++) {
+        if (ans[i] == '0') {
+            flag++;
+        }
+        if (flag == ans.size() - 1) {
+            cout << 0;
+            return 0;
+        }
+    }
+    cout << ans;
+    return 0;
+}
